@@ -1,3 +1,4 @@
+//https://leetcode.com/problems/two-sum/
 function twoSum(nums: number[], target: number): number[] {
     let history = {};
     for(let i = 0;i<nums.length;i++){
