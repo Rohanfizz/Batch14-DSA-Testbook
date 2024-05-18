@@ -10,7 +10,7 @@ class TreeNode {
     }
 }
 
-let arr = [50, 20, 10, -1, -1, 40, -1, -1, 30, 11, -1, -1, -1];
+let arr = [5, 2, 6, -1, -1, 3, 4, -1, -1, -1, 7,  9, -1, -1, 8, -1, -1];
 let idx = 0;
 
 function constructBinaryTree() : TreeNode | null{
@@ -28,16 +28,30 @@ function constructBinaryTree() : TreeNode | null{
     return me;
 }
 
-function displayTree(node:TreeNode | null){
+let root : TreeNode | null = constructBinaryTree();
+
+let preorder : number[] = []
+let inorder : number[] = []
+let postorder : number[] = []
+
+function dfs(node : TreeNode | null) : void{
     if(node == null) return;
 
-    let s = "";
-    s += node.val+": "+node.left?.val+", "+node.right?.val
-    console.log(s)
+    preorder.push(node.val)
+    
+    // left
+    dfs(node.left);
 
-    displayTree(node.left)
-    displayTree(node.right)
+    inorder.push(node.val);
+
+    // right
+    dfs(node.right)
+
+    postorder.push(node.val)
 }
 
-let root = constructBinaryTree();
-displayTree(root)
+dfs(root);
+
+console.log(preorder)
+console.log(inorder)
+console.log(postorder)
