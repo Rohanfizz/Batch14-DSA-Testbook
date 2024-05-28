@@ -13,13 +13,13 @@ class MyLinkedListClass {
     private tail: ListNode | null;
     private size: number;
 
-    constructor(arr:number[]) {
+    constructor(arr: number[]) {
         this.head = null;
         this.tail = null;
         this.size = 0;
 
-        for(let i= 0;i<arr.length;i++){
-            this.addLast(arr[i])
+        for (let i = 0; i < arr.length; i++) {
+            this.addLast(arr[i]);
         }
     }
 
@@ -62,34 +62,34 @@ class MyLinkedListClass {
         console.log(ans);
     };
 
-    removeFirst = function() : number{
-        if(this.size == 0){
+    removeFirst = function (): number {
+        if (this.size == 0) {
             console.log("Linkedlist is empty! Cannot remove!");
             return -1;
         }
         let val = this.head.val;
-        if(this.size == 1){
+        if (this.size == 1) {
             this.head = null;
             this.tail = null;
-        }else{
+        } else {
             this.head = this.head.next;
         }
         this.size--;
         return val;
-    }
+    };
 
-    removeLast = function():number{
-        if(this.size == 0){
+    removeLast = function (): number {
+        if (this.size == 0) {
             console.log("Linkedlist is empty! Cannot remove!");
             return -1;
         }
         let val = this.tail.val;
-        if(this.size == 1){
+        if (this.size == 1) {
             this.head = null;
             this.tail = null;
-        }else{
+        } else {
             let temp = this.head;
-            while(temp.next != this.tail){
+            while (temp.next != this.tail) {
                 temp = temp.next;
             }
             this.tail = temp;
@@ -97,23 +97,63 @@ class MyLinkedListClass {
         }
         this.size--;
         return val;
+    };
+
+    getNodeAt = function (targetIdx: number): ListNode | null {
+        if (targetIdx < 0 || targetIdx >= this.size) {
+            return null;
+        }
+        let temp = this.head;
+        let idx = 0;
+        while (idx < targetIdx) {
+            idx++;
+            temp = temp.next;
+        }
+        return temp;
+    };
+
+    addAt = function (targetIdx: number, val: number) {
+        if (targetIdx < 0 || targetIdx > this.size) {
+            console.log("Invalid index!");
+            return;
+        }
+        if (targetIdx == 0) {
+            this.addFirst(val);
+            return;
+        }
+        if (targetIdx == this.size) {
+            this.addLast(val);
+            return;
+        }
+        //in between first and last
+        let nn = new ListNode(val);
+        let temp = this.getNodeAt(targetIdx - 1);
+        nn.next = temp.next;
+        temp.next = nn;
+        this.size++;
+    };
+
+    removeAt = function (targetIdx:number) : number{
+        if(targetIdx < 0 || targetIdx >= this.size){
+            console.log("Invalid Index!");
+            return -1;
+        }
+        if(targetIdx == 0){
+            return this.removeFirst();
+        }
+        if(targetIdx == this.size-1){
+            return this.removeLast();
+        }
+        let temp = this.getNodeAt(targetIdx-1);
+        let val = temp.next.val;
+        temp.next = temp.next.next;
+        this.size--;
+        return val;
     }
 }
 
-let ll = new MyLinkedListClass([10,20,30,40,50,60,70]);
-
-ll.addFirst(20);
-ll.addFirst(30);
-ll.addLast(40);
-ll.display(); // 30->20->10->40
-console.log("Removed "+ll.removeFirst()); //30
-ll.display(); // 20->10->40
-ll.addFirst(100);
-ll.display(); // 100->20->10->40
-console.log("Removed "+ll.removeLast()); // 40
-ll.display(); // 100->20->10
-console.log("Removed "+ll.removeLast()); // 10
-console.log("Removed "+ll.removeLast()); // 20
-console.log("Removed "+ll.removeLast()); // 10
-ll.display(); // null
-console.log("Removed "+ll.removeFirst()); //30
+let ll = new MyLinkedListClass([10, 20, 30, 40, 50, 60, 70]);
+ll.addAt(1,100);
+console.log("removed node with value:",ll.removeAt(5));
+//10,100,20,30,40,60,70
+ll.display()

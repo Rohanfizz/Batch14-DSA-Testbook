@@ -81,6 +81,55 @@ var MyLinkedListClass = /** @class */ (function () {
             this.size--;
             return val;
         };
+        this.getNodeAt = function (targetIdx) {
+            if (targetIdx < 0 || targetIdx >= this.size) {
+                return null;
+            }
+            var temp = this.head;
+            var idx = 0;
+            while (idx < targetIdx) {
+                idx++;
+                temp = temp.next;
+            }
+            return temp;
+        };
+        this.addAt = function (targetIdx, val) {
+            if (targetIdx < 0 || targetIdx > this.size) {
+                console.log("Invalid index!");
+                return;
+            }
+            if (targetIdx == 0) {
+                this.addFirst(val);
+                return;
+            }
+            if (targetIdx == this.size) {
+                this.addLast(val);
+                return;
+            }
+            //in between first and last
+            var nn = new ListNode(val);
+            var temp = this.getNodeAt(targetIdx - 1);
+            nn.next = temp.next;
+            temp.next = nn;
+            this.size++;
+        };
+        this.removeAt = function (targetIdx) {
+            if (targetIdx < 0 || targetIdx >= this.size) {
+                console.log("Invalid Index!");
+                return -1;
+            }
+            if (targetIdx == 0) {
+                return this.removeFirst();
+            }
+            if (targetIdx == this.size - 1) {
+                return this.removeLast();
+            }
+            var temp = this.getNodeAt(targetIdx - 1);
+            var val = temp.next.val;
+            temp.next = temp.next.next;
+            this.size--;
+            return val;
+        };
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -91,20 +140,7 @@ var MyLinkedListClass = /** @class */ (function () {
     return MyLinkedListClass;
 }());
 var ll = new MyLinkedListClass([10, 20, 30, 40, 50, 60, 70]);
-ll.addFirst(10);
+ll.addAt(1, 100);
+console.log("removed node with value:", ll.removeAt(5));
+//10,100,20,30,40,60,70
 ll.display();
-// ll.addFirst(20);
-// ll.addFirst(30);
-// ll.addLast(40);
-// ll.display(); // 30->20->10->40
-// console.log("Removed "+ll.removeFirst()); //30
-// ll.display(); // 20->10->40
-// ll.addFirst(100);
-// ll.display(); // 100->20->10->40
-// console.log("Removed "+ll.removeLast()); // 40
-// ll.display(); // 100->20->10
-// console.log("Removed "+ll.removeLast()); // 10
-// console.log("Removed "+ll.removeLast()); // 20
-// console.log("Removed "+ll.removeLast()); // 10
-// ll.display(); // null
-// console.log("Removed "+ll.removeFirst()); //30
